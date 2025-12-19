@@ -1,5 +1,5 @@
-import pool from "../config/database.js";
-import { Product } from "../models/product.model.js";
+import pool from "../../../config/database.config.js";
+import { Product } from "../../../models/product.model.js";
 class ProductService {
   async getProducts() {
     const [rows] = await pool.query("SELECT * FROM products");

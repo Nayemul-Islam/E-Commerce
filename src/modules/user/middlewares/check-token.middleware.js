@@ -1,15 +1,16 @@
-import { jwtToken } from "../auth/jwt.token.js";
+import { JwtToken } from "../auth/jwt.token";
+
 const checkToken = (req, res, next) => {
-  const authorization = req.headers["authorization"];
   try {
+    const authorization = req.headers["authorization"];
     if (!authorization) {
       return res
-        .status(401)
+        .status(403)
         .json({ error: "Access denied. No token provided." });
     }
 
     const token = authorization.split(" ")[1];
-    const decoded = jwtToken.verifyToken(token);
+    const decoded = JwtToken.verifyToken(token);
     req.user = { id: decoded.id, email: decoded.email };
     next();
 

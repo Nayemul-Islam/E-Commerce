@@ -1,23 +1,45 @@
-import pool from "../config/database.js";
 import bcrypt from "bcryptjs";
-import { User } from "../models/user.model.js";
-import { jwtToken } from "../auth/jwt.token.js";
+import { JwtToken } from "../../../auth/jwt.token.js";
+import pool from "../../../config/database.config.js";
+import { User } from "./models/user.model.js";
+import { USER_QUERY } from "../../../query/user.query.js";
 
 class UserService {
   async getUsers() {
-    const [rows] = await pool.query("SELECT * FROM users");
+    const [rows] = await pool.query(USER_QUERY.GET_ALL);
     return rows.map((row) => new User(row));
   }
 
+  getByKey(key, value) {
+    const allowedFields = ["id", "email", "name"];
+    if (!allowedFields.includes(key)) throw new Error("key dosen't exists");
+    return pool.query(USER_QUERY.GET_BY_KEY(key), [value]);
+  }
+
+  getFieldsAndValues(user) {
+
+    const values = [];
+    const fields = [];
+    const allowedFields = ["name", "email", "password"];
+
+    for (const key of allowedFields) {
+
+      if (user[key]) {
+        fields.push(`${key} = ?`);
+
+        values.push(key === "password" ?  user[key]);
+      }
+    }
+    return [fields, values];
+  }
+
   async getUserById(id) {
-    const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
+    const [rows] = await this.getByKey("id", id);
     return rows[0] ? new User(rows[0]) : null;
   }
 
   async getUserByEmail(email) {
-    const [rows] = await pool.query("SELECT * FROM users WHERE email = ?", [
-      email,
-    ]);
+    const [rows] = await this.getByKey("email", email);
     return rows[0] || null;
   }
 
@@ -43,7 +65,7 @@ class UserService {
     }
     return {
       id: user.id,
-      token: jwtToken.generateToken({ id: user.id, email: user.email }),
+      token: JwtToken.generateToken({ id: user.id, email: user.email }),
     };
   }
 

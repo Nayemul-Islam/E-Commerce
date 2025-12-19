@@ -9,6 +9,7 @@ dotenv.config({ quiet: true });
 
 const port = process.env.PORT || 3000;
 app.use(express.json());
+
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 

@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { userController } from "../controllers/user.controller.js";
-import checkToken from "../middlewares/checkToken.js";
+import { userController } from "../../../controllers/user.controller.js";
+import checkToken from "../../../middlewares/check-token.middleware.js";
 const router = Router();
 
 router.get("", checkToken, userController.getUsers);
+
 router.get("/:id", userController.getUserById);
 
 router.post("/signup", userController.createUser);
