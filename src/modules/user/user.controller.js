@@ -1,60 +1,66 @@
-import { userService } from "../src/modules/user/user.service.js";
+import UserService from "./user.service.js";
+
 class UserController {
-  async getUsers(req, res) {
+  constructor() {
+    this.userService = new UserService();
+  }
+
+  getUsers = async (req, res) => {
     try {
-      const users = await userService.getUsers();
+      const users = await this.userService.getUsers();
       res.json(users);
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 
-  async getUserById(req, res) {
+  getUserById = async (req, res) => {
     const userId = req.params.id;
     try {
-      const user = await userService.getUserById(userId);
+      const user = await this.userService.getUserById(userId);
       res.json(user);
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 
-  async createUser(req, res) {
+  createUser = async (req, res) => {
     try {
-      const user = await userService.createUser(req.body);
+      const user = await this.userService.createUser(req.body);
       res.status(201).json(user);
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 
-  async loginUser(req, res) {
+  loginUser = async (req, res) => {
     try {
-      const { id, token } = await userService.loginUser(req.body);
+      const { id, token } = await this.userService.loginUser(req.body);
       res.json({ id, token });
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 
-  async updateUser(req, res) {
+  updateUser = async (req, res) => {
     const userId = req.params.id;
     try {
-      const updatedUser = await userService.updateUser(userId, req.body);
+      const updatedUser = await this.userService.updateUser(userId, req.body);
       res.json(updatedUser);
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
-  
-  async deleteUser(req, res) {
+  };
+
+  deleteUser = async (req, res) => {
     const userId = req.params.id;
     try {
-      await userService.deleteUser(userId);
+      await this.userService.deleteUser(userId);
       res.status(204).send();
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 }
-export const userController = new UserController();
+
+export default UserController;

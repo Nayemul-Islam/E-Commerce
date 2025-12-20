@@ -1,4 +1,4 @@
-import { JwtToken } from "../auth/jwt.token";
+import { JwtToken } from "./jwt.token.js";
 
 const checkToken = (req, res, next) => {
   try {
