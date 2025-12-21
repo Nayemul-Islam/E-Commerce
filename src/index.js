@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 
-import userRoutes from "./src/modules/user/user.routes.js";
-// import productRoutes from "./routes/product.routes.js";
+import userRoutes from "./modules/user/user.routes.js";
+import productRoutes from "./modules/product/product.routes.js"
 
 const app = express();
 dotenv.config({ quiet: true });
@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/users", userRoutes);
-// app.use("/products", productRoutes);
+app.use("/products", productRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

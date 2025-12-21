@@ -54,7 +54,6 @@ class UserService {
 
   updateUser = async (id, user) => {
     try {
-      
       const [fields, values] = await getFieldsAndValues(user);
       values.push(id);
       console.log(fields);

@@ -1,52 +1,60 @@
-import { productService } from "../services/product.service.js";
+import ProductService from "./product.service.js";
+
 class ProductController {
-  async getProducts(req, res) {
+  constructor() {
+    this.productService = new ProductService();
+  }
+
+  getProducts = async (req, res) => {
     try {
-      const products = await productService.getProducts();
+      const products = await this.productService.getProducts();
       res.json(products);
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 
-  async getProductById(req, res) {
+  getProductById = async (req, res) => {
     const productId = req.params.id;
     try {
-      const product = await productService.getProductById(productId);
+      const product = await this.productService.getProductById(productId);
       res.json(product);
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 
-  async createProduct(req, res) {
+  createProduct = async (req, res) => {
     try {
-      const product = await productService.createProduct(req.body);
+      const product = await this.productService.createProduct(req.body);
       res.status(201).json(product);
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 
-  async updateProduct(req, res) {
-    const productId = req.params.id;
+  updateProduct = async (req, res) => {
     try {
-      const product = await productService.updateProduct(productId, req.body);
+      const productId = req.params.id;
+      const product = await this.productService.updateProduct(
+        productId,
+        req.body
+      );
       res.json(product);
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 
-  async deleteProduct(req, res) {
-    const productId = req.params.id;
+  deleteProduct = async (req, res) => {
     try {
-      await productService.deleteProduct(productId);
+      const productId = req.params.id;
+      await this.productService.deleteProduct(productId);
       res.status(204).send();
     } catch (error) {
       res.status(error.status || 500).json({ error: error.message });
     }
-  }
+  };
 }
 
-export const productController = new ProductController();
+export default ProductController;
