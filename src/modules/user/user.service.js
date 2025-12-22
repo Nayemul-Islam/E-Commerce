@@ -1,7 +1,7 @@
 import { User } from "./models/user.model.js";
 import { USER_QUERY } from "./user.query.js";
-import { getByKey } from "./service/get-by-key.js";
-import { getFieldsAndValues } from "./service/get-fields-and-values.js";
+import { getByKey } from "./service/user-get-by-key.service.js";
+import { getFieldsAndValues } from "./utils/get-fields-and-values.js";
 import { JwtToken } from "../../lib/auth/jwt.token.js";
 import { comparePassword } from "../../lib/password-encoder.js";
 import pool from "./../../config/database.config.js";
@@ -18,7 +18,7 @@ class UserService {
 
   getUserById = async (id) => {
     try {
-      return getByKey("id", id);
+      return await getByKey("id", id);
     } catch (error) {
       throw new Error("Error fetching user by id: " + error.message);
     }
@@ -27,7 +27,6 @@ class UserService {
   createUser = async (user) => {
     try {
       const [fields, values] = await getFieldsAndValues(user);
-
       const [result] = await pool.query(USER_QUERY.INSERT_USER(fields), values);
 
       return { id: result.insertId, name: user.name, email: user.email };
@@ -56,9 +55,6 @@ class UserService {
     try {
       const [fields, values] = await getFieldsAndValues(user);
       values.push(id);
-      console.log(fields);
-      console.log(values);
-
       await pool.query(USER_QUERY.UPDATE_USER(fields), values);
 
       return this.getUserById(id);
