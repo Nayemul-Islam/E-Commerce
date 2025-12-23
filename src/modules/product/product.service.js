@@ -5,7 +5,7 @@ import { getFieldsAndValues } from "./utils/get-fields-and-values.js";
 import { getByKey } from "./service/product-get-by-key.service.js";
 
 class ProductService {
-  getProducts = async () => {
+  async getProducts() {
     try {
       const [rows] = await pool.query(PRODUCT_QUERY.GET_ALL);
 
@@ -13,17 +13,17 @@ class ProductService {
     } catch (error) {
       throw new Error("Error fetching products: " + error.message);
     }
-  };
+  }
 
-  getProductById = async (productId) => {
+  async getProductById(productId) {
     try {
       return await getByKey("id", productId);
     } catch (error) {
       throw new Error("Error fetching product by id: " + error.message);
     }
-  };
+  }
 
-  createProduct = async (product) => {
+  async createProduct(product) {
     try {
       const [fields, values] = getFieldsAndValues(product);
       const [result] = await pool.query(
@@ -35,9 +35,9 @@ class ProductService {
     } catch (error) {
       throw new Error("Error adding product " + error.message);
     }
-  };
+  }
 
-  updateProduct = async (productId, product) => {
+  async updateProduct(productId, product) {
     try {
       const [fields, values] = getFieldsAndValues(product);
       values.push(productId);
@@ -47,15 +47,15 @@ class ProductService {
     } catch (error) {
       throw new Error("Error updating product:" + error.message);
     }
-  };
+  }
 
-  deleteProduct = async (productId) => {
+  async deleteProduct(productId) {
     try {
       await pool.query(PRODUCT_QUERY.DELETE_PRODUCT, [productId]);
     } catch (error) {
       throw new Error("Error deleting product : " + error.message);
     }
-  };
+  }
 }
 
 export default ProductService;

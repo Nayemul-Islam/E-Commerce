@@ -1,11 +1,10 @@
+import { COMMON_QUERY } from "../../constant/common-query.constant.js";
+
+const TABLE_NAME = "users";
 export const USER_QUERY = {
-  GET_ALL: "SELECT * FROM users",
-  GET_BY_KEY: (key) => `SELECT * FROM users WHERE ${key} = ?`,
-  INSERT_USER: (keys) => `
-  INSERT INTO users (${keys.join(", ")})
-  VALUES (${keys.map(() => "?").join(", ")})
-`,
-  UPDATE_USER: (keys) =>
-    `UPDATE users SET ${keys.join(" = ?, ")} = ? WHERE id = ?`,
-  DELETE_USER: "DELETE FROM users WHERE id = ?",
+  GET_ALL: COMMON_QUERY.GET_ALL(TABLE_NAME),
+  GET_BY_KEY: (key) => COMMON_QUERY.GET_BY_KEY(TABLE_NAME, key),
+  INSERT_USER: (keys) => COMMON_QUERY.INSERT(TABLE_NAME, keys),
+  UPDATE_USER: (keys) => COMMON_QUERY.UPDATE(TABLE_NAME, keys),
+  DELETE_USER: COMMON_QUERY.DELETE(TABLE_NAME),
 };

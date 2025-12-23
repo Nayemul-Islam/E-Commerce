@@ -3,7 +3,7 @@ import { USER_QUERY } from "./user.query.js";
 import { getByKey } from "./service/user-get-by-key.service.js";
 import { getFieldsAndValues } from "./utils/get-fields-and-values.js";
 import { JwtToken } from "../../lib/auth/jwt.token.js";
-import { comparePassword } from "../../lib/password-encoder.js";
+import { comparePassword } from "../../lib/bcrypt/password-encoder.js";
 import pool from "./../../config/database.config.js";
 
 class UserService {

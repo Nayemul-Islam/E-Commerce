@@ -1,4 +1,4 @@
-import { encryptPassword } from "../../../lib/password-encoder.js";
+import { encryptPassword } from "../../../lib/bcrypt/password-encoder.js";
 
 export const getFieldsAndValues = async (user) => {
   const values = [];

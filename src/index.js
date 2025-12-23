@@ -13,10 +13,6 @@ app.use(express.json());
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
